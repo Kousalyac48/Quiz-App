@@ -1,4 +1,5 @@
 **Interactive Quiz Application**
+
    A lightweight Java Swing desktop application that connects to a MySQL database to deliver a timed, randomized quiz.
 
 **🚀 Features**
@@ -18,10 +19,7 @@ MySQL Server (and MySQL Workbench).
 MySQL Connector JAR (Add to your project build path or use Maven).
 
 **⚙️ Setup**
-1) Database: Create a schema named quiz_system and run the following:
-        CREATE TABLE users (user_id INT PRIMARY KEY AUTO_INCREMENT, username VARCHAR(50), password VARCHAR(50));
-        CREATE TABLE questions (id INT PRIMARY KEY AUTO_INCREMENT, question_text TEXT, option_a VARCHAR(100), option_b VARCHAR(100), option_c VARCHAR(100), option_d VARCHAR(100), correct_answer CHAR(1));
-        CREATE TABLE results (result_id INT PRIMARY KEY AUTO_INCREMENT, user_id INT, score INT, total_questions INT);
+1) Database: Create a schema named quiz_system and run.     
 2) Credentials: Update DBConfig.java with your MySQL root password.
 3) Run: Execute the main method in QuizApp.java
 
