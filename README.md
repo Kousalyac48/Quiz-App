@@ -1,55 +1,36 @@
-📝 Interactive Quiz System (Java & MySQL)
-A streamlined, high-performance desktop quiz application featuring a Dark Mode UI. This project demonstrates core Java competencies including GUI design, event-driven programming, and JDBC database integration.
+**Interactive Quiz Application**
+   A lightweight Java Swing desktop application that connects to a MySQL database to deliver a timed, randomized quiz.
 
-📂 Project Structure
-The project is optimized into two primary components:
+**🚀 Features**
+Login System: Secure user authentication.
+Timed Questions: 15-second countdown per question.
+Randomized Content: Fetches 5 random questions from the database each session.
+Score Tracking: Automatically saves results to the SQL database.
+Dark Theme: Custom modern UI using a dark color palette.
 
-DBConfig.java: Manages the JDBC connection lifecycle and database credentials.
+**🛠️ Files**
+DBConfig.java: Handles the connection to the MySQL database.
+QuizApp.java: Contains the entire GUI, Login logic, and Quiz engine.
 
-QuizApp.java: A unified file containing the Main Dashboard, Login Authentication (JDialog), and custom UI Styling.
+**📋 Prerequisites**
+Java JDK 8 or higher.
+MySQL Server (and MySQL Workbench).
+MySQL Connector JAR (Add to your project build path or use Maven).
 
-🛠 Features
-User Authentication: Secure login dialog verified against a MySQL users table.
+**⚙️ Setup**
+1) Database: Create a schema named quiz_system and run the following:
+        CREATE TABLE users (user_id INT PRIMARY KEY AUTO_INCREMENT, username VARCHAR(50), password VARCHAR(50));
+        CREATE TABLE questions (id INT PRIMARY KEY AUTO_INCREMENT, question_text TEXT, option_a VARCHAR(100), option_b VARCHAR(100), option_c VARCHAR(100), option_d VARCHAR(100), correct_answer CHAR(1));
+        CREATE TABLE results (result_id INT PRIMARY KEY AUTO_INCREMENT, user_id INT, score INT, total_questions INT);
+2) Credentials: Update DBConfig.java with your MySQL root password.
+3) Run: Execute the main method in QuizApp.java
 
-Live Countdown: 15-second timer per question using javax.swing.Timer.
+**🏁 Conclusion**
+The Interactive Quiz Application successfully demonstrates the practical application of Java Swing for front-end development and MySQL for robust data management. By bridging these two technologies via JDBC, the project achieves a seamless flow from user authentication to real-time performance tracking.
 
-Dynamic Content: Randomly selects 5 questions per session from the database.
+**Key Takeaways:**
+Database Integration: Gained hands-on experience with CRUD operations and SQL randomization.
+Event-Driven Programming: Mastered the use of javax.swing.Timer and ActionListeners to create a dynamic user experience.
+Modular Design: Separated database configuration from UI logic to ensure code maintainability and scalability.
 
-Persistent Results: Automatically saves user scores and timestamps to a results table.
-
-Responsive UI: Built with GridBagLayout and BorderLayout for clean component scaling.
-
-⚙️ Setup & Installation
-1. Database Setup (MySQL Workbench)
-Run the following SQL script to initialize the system:
-
-SQL
-CREATE DATABASE quiz_system;
-USE quiz_system;
-
-CREATE TABLE users (user_id INT PRIMARY KEY AUTO_INCREMENT, username VARCHAR(50), password VARCHAR(50));
-CREATE TABLE questions (id INT PRIMARY KEY AUTO_INCREMENT, question_text TEXT, option_a VARCHAR(100), option_b VARCHAR(100), option_c VARCHAR(100), option_d VARCHAR(100), correct_answer CHAR(1));
-CREATE TABLE results (result_id INT PRIMARY KEY AUTO_INCREMENT, user_id INT, score INT, total_questions INT, FOREIGN KEY (user_id) REFERENCES users(user_id));
-
--- Add test user
-INSERT INTO users (username, password) VALUES ('admin', 'root');
-2. Dependency Management (Maven)
-Include the following in your pom.xml to enable the SQL bridge:
-
-XML
-<dependency>
-    <groupId>com.mysql</groupId>
-    <artifactId>mysql-connector-j</artifactId>
-    <version>8.3.0</version>
-</dependency>
-3. Execution
-Update the credentials in DBConfig.java to match your MySQL setup.
-
-Compile and run QuizApp.java.
-
-🚀 Key Technical Highlights
-SQL Randomization: Uses ORDER BY RAND() LIMIT 5 to ensure unique quiz experiences without overhead in Java memory.
-
-Thread-Safe UI: Implements timer logic on the Event Dispatch Thread (EDT) for smooth performance.
-
-HTML Rendering: Utilizes HTML tags within JLabel components to support automatic text wrapping for long questions.
+This project serves as a foundational template for more complex assessment tools. Future updates will focus on implementing password hashing for enhanced security and a dedicated administrator dashboard for real-time question management.
