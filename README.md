@@ -31,10 +31,10 @@ MySQL Connector JAR (Add to your project build path or use Maven).
 **⚙️ Setup**
 
 1) Database: Create a schema named quiz_system and run.
-2) 
-3) Credentials: Update DBConfig.java with your MySQL root password.
-4) 
-5) Run: Execute the main method in QuizApp.java
+   
+2) Credentials: Update DBConfig.java with your MySQL root password.
+   
+3) Run: Execute the main method in QuizApp.java
 
 **🏁 Conclusion**
 
