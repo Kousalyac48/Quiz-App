@@ -1,0 +1,80 @@
+/* ================================================================
+PROJECT: Online Quiz System - Database Schema
+AUTHOR: [Your Name]
+DESCRIPTION: This script initializes the database, creates tables 
+             for user management, questions, and result tracking.
+================================================================
+*/
+
+-- 1. DATABASE INITIALIZATION
+-- Create the database if it doesn't exist and set it as the active context.
+CREATE DATABASE IF NOT EXISTS quiz_system;
+USE quiz_system;
+
+-- 2. USER AUTHENTICATION TABLE
+-- Stores login credentials and user roles (Admin vs Student).
+CREATE TABLE IF NOT EXISTS users (
+    user_id INT PRIMARY KEY AUTO_INCREMENT,
+    username VARCHAR(50) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL, -- Note: Store as plain text for demo; use hashing for production.
+    role ENUM('Admin', 'Student') DEFAULT 'Student'
+);
+
+-- 3. QUESTION BANK TABLE
+-- Stores the quiz questions, four options, and the identifier for the correct answer.
+CREATE TABLE IF NOT EXISTS questions (
+    q_id INT PRIMARY KEY AUTO_INCREMENT,
+    question_text TEXT NOT NULL,
+    option_a VARCHAR(255) NOT NULL,
+    option_b VARCHAR(255) NOT NULL,
+    option_c VARCHAR(255) NOT NULL,
+    option_d VARCHAR(255) NOT NULL,
+    correct_answer CHAR(1) NOT NULL -- Expected values: 'A', 'B', 'C', or 'D'
+);
+
+-- 4. QUIZ RESULTS TABLE
+-- Tracks student performance, linking scores to users via a Foreign Key.
+CREATE TABLE IF NOT EXISTS results (
+    result_id INT PRIMARY KEY AUTO_INCREMENT,
+    user_id INT,
+    score INT NOT NULL,
+    total_questions INT NOT NULL,
+    date_taken TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- Automatically records time of completion
+    FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
+);
+
+-- 5. SEED DATA (BOOTSTRAPPING)
+-- Adding a default student for testing purposes.
+INSERT IGNORE INTO users (username, password, role) 
+VALUES ('student1', 'pass123', 'Student');
+
+-- Populating the question bank with core Java concepts.
+TRUNCATE TABLE questions;
+INSERT INTO questions (question_text, option_a, option_b, option_c, option_d, correct_answer) VALUES 
+('Which of the following is NOT a Java keyword?', 'static', 'Boolean', 'void', 'private', 'B'),
+('What is the size of float variable in Java?', '8 bit', '16 bit', '32 bit', '64 bit', 'C'),
+('Which class is the superclass of every class in Java?', 'String', 'Object', 'Abstract', 'Main', 'B'),
+('Which of these is used to handle exceptions in Java?', 'try-catch', 'check-error', 'if-else', 'throw-skip', 'A'),
+('Which method is called first when an object is created?', 'start()', 'init()', 'constructor', 'main()', 'C');
+
+-- 6. ANALYTICS & REPORTING QUERIES
+-- These queries help administrators view performance data.
+
+-- A. View detailed results with Student names
+SELECT 
+    u.username AS 'Student Name', 
+    r.score AS 'Marks Obtained', 
+    r.total_questions AS 'Total Questions', 
+    r.date_taken AS 'Submission Date'
+FROM results r
+JOIN users u ON r.user_id = u.user_id
+ORDER BY r.date_taken DESC;
+
+-- B. Global Leaderboard (High Scores per Student)
+SELECT 
+    u.username AS 'Student', 
+    MAX(r.score) AS 'High Score'
+FROM results r
+JOIN users u ON r.user_id = u.user_id
+GROUP BY u.username
+ORDER BY `High Score` DESC;
